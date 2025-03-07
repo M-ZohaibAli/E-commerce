@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-gallery {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: contain;
+            cursor: zoom-in;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail.active {
+            border-color: var(--primary-color);
+        }
+
+        .product-details {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-stars {
+            color: #f59e0b;
+        }
+
+        .product-description {
+            line-height: 1.6;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .product-variants {
+            margin-bottom: 2rem;
+        }
+
+        .variant-option {
+            margin: 0.5rem 0;
+        }
+
+        .variant-label {
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .variant-selector {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+
+        .variant-selector.active {
+            border-color: var(--primary-color);
+            background-color: #eff6ff;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .quantity-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .quantity-input {
+            width: 60px;
+            padding: 0.5rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .add-to-cart {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+
+            .main-image {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="product-container">
+        <div class="product-gallery">
+            <img src="main-product-image.jpg" alt="Product Name" class="main-image" id="mainImage">
+            <div class="thumbnail-grid">
+                <img src="thumbnail1.jpg" alt="Thumbnail 1" class="thumbnail active" onclick="changeImage(this)">
+                <img src="thumbnail2.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeImage(this)">
+                <img src="thumbnail3.jpg" alt="Thumbnail 3" class="thumbnail" onclick="changeImage(this)">
+                <img src="thumbnail4.jpg" alt="Thumbnail 4" class="thumbnail" onclick="changeImage(this)">
+            </div>
+        </div>
+
+        <div class="product-details">
+            <h1 class="product-title">Premium Wireless Headphones</h1>
+            <div class="product-rating">
+                <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span>(128 reviews)</span>
+            </div>
+            <div class="product-price">$299.99</div>
+            <p class="product-description">
+                High-quality wireless headphones with active noise cancellation. 
+                40-hour battery life, premium comfort design, and crystal-clear sound.
+            </p>
+
+            <div class="product-variants">
+                <div class="variant-option">
+                    <span class="variant-label">Color:</span>
+                    <button class="variant-selector active" onclick="selectVariant(this, 'color')">Black</button>
+                    <button class="variant-selector" onclick="selectVariant(this, 'color')">Silver</button>
+                </div>
+                <div class="variant-option">
+                    <span class="variant-label">Size:</span>
+                    <button class="variant-selector active" onclick="selectVariant(this, 'size')">Standard</button>
+                    <button class="variant-selector" onclick="selectVariant(this, 'size')">XL</button>
+                </div>
+            </div>
+
+            <div class="quantity-selector">
+                <button class="quantity-btn" onclick="adjustQuantity(-1)">-</button>
+                <input type="number" class="quantity-input" value="1" min="1" id="quantity">
+                <button class="quantity-btn" onclick="adjustQuantity(1)">+</button>
+            </div>
+
+            <button class="add-to-cart" onclick="addToCart()">
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Item added to cart!</div>
+
+    <script>
+        // Image Gallery Functionality
+        function changeImage(thumbnail) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = thumbnail.src;
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+
+        // Variant Selection
+        function selectVariant(button, type) {
+            document.querySelectorAll(`[onclick*="${type}"]`).forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+        }
+
+        // Quantity Adjustment
+        function adjustQuantity(change) {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value) + change;
+            if (quantity < 1) quantity = 1;
+            quantityInput.value = quantity;
+        }
+
+        // Add to Cart Functionality
+        function addToCart() {
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+
+            // Cart logic would go here
+            const cartItem = {
+                id: 'product123',
+                name: document.querySelector('.product-title').innerText,
+                price: document.querySelector('.product-price').innerText,
+                quantity: document.getElementById('quantity').value,
+                color: document.querySelector('[data-type="color"].active').innerText,
+                size: document.querySelector('[data-type="size"].active').innerText
+            };
+
+            // Store in localStorage (simplified example)
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Image Zoom Effect
+        document.getElementById('mainImage').addEventListener('mousemove', (e) => {
+            const image = e.target;
+            image.style.transformOrigin = `${e.offsetX}px ${e.offsetY}px`;
+            image.style.transform = 'scale(2)';
+        });
+
+        document.getElementById('mainImage').addEventListener('mouseleave', (e) => {
+            e.target.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
